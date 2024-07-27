@@ -2,36 +2,50 @@
 
 ## NGINX
 
-### 1. Security 🔒
+### Security 🔒
 
 | Feature                | Description                                                                 |
 |------------------------|-----------------------------------------------------------------------------|
 | **Reverse Proxy**      | Prevents basic attacks/vectors                                             |
 | **DDoS Mitigation**    | Improves request management, enhancing protection against DDoS attacks      |
 
-### 2. SSL 🔐
+### SSL 🔐
 
-### 3. Scalability 📈
+### Scalability 📈
 
 - **Load Balancing**
   - **Local Load Balancing**: Distributes traffic within the same location.
   - **Distributed Load Balancing**: Distributes traffic across multiple locations.
 
-### 4. Caching 📦
+### Caching 📦
 
-- **Caches Cacheable URLs**: Improves performance by caching frequently accessed URLs.
+- **Caches URLs**: Improves performance by caching frequently accessed URLs.
 
-### 5. Nesting 🌳
+### Nesting 🌳
 
 - **Proxy Nesting**: Allows for complex configurations by nesting proxies.
 
-### 6. Data Compression 🗜️
+### Data Compression 🗜️
 
 - **Faster Traffic**: Improves performance by compressing data.
 - **Reduced Costs**: Lowers costs by reducing data traffic.
 - **Faster Thread Release**: Mitigates DDoS by releasing threads more quickly.
 - **Avoids API Compression**: Saves CPU by avoiding compression within the API.
 
+### Horizontal Scaling (Resilience) 📈
+- Replica do container (2 formas) - Horizontal Scaling:
+  * [Dynamic | docker-scale](https://youtu.be/9aOpRhm33oM)
+  * [Static | Compose Duplicity](https://youtu.be/bFZurhL14LA)
+
+### Proxy / Redirection 🔄
+- ["Redirectinal Proxy"](https://youtu.be/bFZurhL14LA)
+
+### Important Tutorials 📚️
+- **Cezar milan**:
+  * [Nginx include Servers](https://youtu.be/WeoZ4Ego1vs)
+  * [Nginx Features - Video 1](https://youtu.be/E51dIa0ZcGs)
+  * [Nginx Features - Video 2](https://youtu.be/Sa74-4ExZ4Q)
+  * [GitHub](https://github.com/wesleymilan/nginx-for-nodejs/blob/main/config/nginx/nginx.conf)
 ---
 
 This README provides a clear and concise overview of the NGINX project, highlighting key features and benefits. Use the table for a quick reference on security features. Emoticons are used to enhance readability and make the document more engaging.
