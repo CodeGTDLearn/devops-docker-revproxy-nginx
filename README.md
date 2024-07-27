@@ -1,45 +1,37 @@
-# NginxRevProxy
+# Project Index
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+## NGINX
 
-## Running the application
+### 1. Security 🔒
 
-The project is a standard Maven project. To run it from the command line,
-type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
-http://localhost:8080 in your browser.
+| Feature                | Description                                                                 |
+|------------------------|-----------------------------------------------------------------------------|
+| **Reverse Proxy**      | Prevents basic attacks/vectors                                             |
+| **DDoS Mitigation**    | Improves request management, enhancing protection against DDoS attacks      |
 
-You can also import the project to your IDE of choice as you would with any
-Maven project. Read more on [how to import Vaadin projects to different IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
+### 2. SSL 🔐
 
-## Deploying to Production
+### 3. Scalability 📈
 
-To create a production build, call `mvnw clean package -Pproduction` (Windows),
-or `./mvnw clean package -Pproduction` (Mac & Linux).
-This will build a JAR file with all the dependencies and front-end resources,
-ready to be deployed. The file can be found in the `target` folder after the build completes.
+- **Load Balancing**
+  - **Local Load Balancing**: Distributes traffic within the same location.
+  - **Distributed Load Balancing**: Distributes traffic across multiple locations.
 
-Once the JAR file is built, you can run it using
-`java -jar target/devops-docker-revproxy-nginx-1.0-SNAPSHOT.jar`
+### 4. Caching 📦
 
-## Project structure
+- **Caches Cacheable URLs**: Improves performance by caching frequently accessed URLs.
 
-- `MainLayout.java` in `src/main/java` contains the navigation setup (i.e., the
-  side/top bar and the main menu). This setup uses
-  [App Layout](https://vaadin.com/docs/components/app-layout).
-- `views` package in `src/main/java` contains the server-side Java views of your application.
-- `views` folder in `src/main/frontend` contains the client-side JavaScript views of your application.
-- `themes` folder in `src/main/frontend` contains the custom CSS styles.
+### 5. Nesting 🌳
 
-## Useful links
+- **Proxy Nesting**: Allows for complex configurations by nesting proxies.
 
-- Read the documentation at [vaadin.com/docs](https://vaadin.com/docs).
-- Follow the tutorial at [vaadin.com/docs/latest/tutorial/overview](https://vaadin.com/docs/latest/tutorial/overview).
-- Create new projects at [start.vaadin.com](https://start.vaadin.com/).
-- Search UI components and their usage examples at [vaadin.com/docs/latest/components](https://vaadin.com/docs/latest/components).
-- View use case applications that demonstrate Vaadin capabilities at [vaadin.com/examples-and-demos](https://vaadin.com/examples-and-demos).
-- Build any UI without custom CSS by discovering Vaadin's set of [CSS utility classes](https://vaadin.com/docs/styling/lumo/utility-classes). 
-- Find a collection of solutions to common use cases at [cookbook.vaadin.com](https://cookbook.vaadin.com/).
-- Find add-ons at [vaadin.com/directory](https://vaadin.com/directory).
-- Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/vaadin) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
-- Report issues, create pull requests in [GitHub](https://github.com/vaadin).
+### 6. Data Compression 🗜️
+
+- **Faster Traffic**: Improves performance by compressing data.
+- **Reduced Costs**: Lowers costs by reducing data traffic.
+- **Faster Thread Release**: Mitigates DDoS by releasing threads more quickly.
+- **Avoids API Compression**: Saves CPU by avoiding compression within the API.
+
+---
+
+This README provides a clear and concise overview of the NGINX project, highlighting key features and benefits. Use the table for a quick reference on security features. Emoticons are used to enhance readability and make the document more engaging.

@@ -1,0 +1,28 @@
+version: '3.4'
+
+#DOCKER-COMPOSEe COMMON VARIABLES [VARIAVEIS USADAS SOMENTE DENTRO DESTE DOCKER-COMPOSE FILE]
+x-common-variables:
+  &db-variables
+    MYSQL_DATABASE: Users
+    MYSQL_USERNAME: root
+    MYSQL_ROOT_PASSWORD: root
+
+
+networks:
+  db:
+  router:
+
+services:
+  router:
+    build: router\nginx
+    image: router-img-nginx
+    ports:            #PORT:
+      - "1111:8080"   #REQUEST ENTRY-POINT [PORTA DE ENTRADA DOS REQUESTS]
+    hostname: router
+    tty: true
+    environment:
+      - NGINX_PORT=8080
+    depends_on:
+      - webapp
+    networks:
+      - router
