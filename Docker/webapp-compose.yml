@@ -1,20 +1,36 @@
 version: "4"
 
 networks:
-  router:
+  router_scaled_revproxy:
 
 services:
   webapp:
-    build:
-      context: .. # Define o context[root] na pasta anterior, a pasta Docker
-      dockerfile: ./Docker/DockerfileVaadin
-
-    image: webapp-nginx-img
-    ports: #TEST-PORT: EXCLUSIVE PORT FOR API TEST WITH HTTP-CLIENT[EX. POSTMAN]
-      - "8080:8080" #[PORTA EXCLUSIVA PARA TESTE DA API COM HTTP-CLIENTE[EX. POSTMAN]]
     hostname: web
+    build:
+      context: .. # Fixa a [root] na "pasta 'de traz', da pasta Docker
+      dockerfile: ./Docker/DockerfileVaadin
+    image: webapp-nginx-img
     tty: true
-    #    depends_on:
-    #      - mysql
-#    networks:
-#      - router
+
+    # container_name: Not allow 'multiple containers'[Docker Scale]
+    # container_name: webapp_api
+
+    # ports: It is not possible 'map' a 'single port'
+    #        for 'multiple containers'[Docker Scale]
+    # ports:
+    #  - "8080:8080"
+    networks:
+      - router_scaled_revproxy
+
+  nginx:
+    image: nginx:alpine
+    # etc/nginx/conf.d: Default path to Nginx 'Custom Configurations'
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+
+    depends_on:
+      - webapp  # WebApp service name
+    ports:
+      - "3000:8080" # Nginx Port: WebApp Port[configured in app.props]
+    networks:
+      - router_scaled_revproxy

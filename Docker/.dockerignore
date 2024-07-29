@@ -1,0 +1,4 @@
+.dockerignore
+webapp-compose.yml
+nginx-compose.yml
+DockerfileVaadin
