@@ -18,6 +18,7 @@ public class AppDriver implements AppShellConfigurator {
   public static void main(String[] args) {
 
     SpringApplication.run(AppDriver.class, args);
+
   }
 
 }

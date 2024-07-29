@@ -47,5 +47,3 @@
   * [Nginx Features - Video 2](https://youtu.be/Sa74-4ExZ4Q)
   * [GitHub](https://github.com/wesleymilan/nginx-for-nodejs/blob/main/config/nginx/nginx.conf)
 ---
-
-This README provides a clear and concise overview of the NGINX project, highlighting key features and benefits. Use the table for a quick reference on security features. Emoticons are used to enhance readability and make the document more engaging.
