@@ -1,0 +1,32 @@
+version: "3.8"
+
+networks:
+  router_scaled_revproxy:
+
+services:
+  webapp:
+    image: webapp-vaadin-nginx
+#    restart: on-failure
+    build:
+      context: .. # Fixa a [root] na "pasta 'de traz', da pasta Docker
+      dockerfile: ./Docker/DockerfileVaadin
+    tty: true
+
+    # container_name: Not allow 'Docker Scale' with a SingleName
+
+    #ports:  # ports: Not allow Docker Scale in a SinglePort
+    # - "8080:8080"
+    networks:
+      - router_scaled_revproxy
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ../nginx:/etc/nginx
+    depends_on:
+      - webapp  # WebApp service name
+    # LocalPort/EC2-Port[80]:NginxPortContainerService[3000] (server->listen Nginx.conf)
+    ports:
+      - "80:3000"
+    networks:
+      - router_scaled_revproxy
