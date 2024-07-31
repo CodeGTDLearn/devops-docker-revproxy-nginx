@@ -1,0 +1,21 @@
+version: "4"
+
+networks:
+  router_revproxy_loadbalancer:
+
+services:
+
+  node-1:
+    image: webapp-1
+    restart: always
+    build:
+      context: .. # Fixa a [root] na "pasta 'de traz', da pasta Docker
+      dockerfile: ./Docker/DockerfileVaadin
+    tty: true
+
+    # container_name: Not allow 'Docker Scale' with a 'SingleName'
+
+    #ports: Not allow 'Docker Scale' in a 'SinglePort'
+    # - "8080:8080"
+    networks:
+      - router_revproxy_loadbalancer

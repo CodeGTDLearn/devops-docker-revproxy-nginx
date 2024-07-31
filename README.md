@@ -13,32 +13,37 @@
 ## Índice
 
 1. [Configurações Gerais do Nginx](#configurações-gerais-do-nginx)
+
 * [worker_processes](#worker_processes)
 * [error_log](#error_log)
 * [events](#events)
 * [worker_connections](#worker_connections)
 * [http](#http)
-  * [include](#include)
-  * [sendfile](#sendfile)
-  * [server_tokens](#server_tokens)
-  * [client_max_body_size](#client_max_body_size)
-  * [gzip](#gzip)
-    * [gzip_proxied](#gzip_proxied)
-    * [gzip_types](#gzip_types)
-    * [gzip_comp_level](#gzip_comp_level)
-  * [upstream](#upstream)
-  * [server](#server)
+    * [include](#include)
+    * [sendfile](#sendfile)
+    * [server_tokens](#server_tokens)
+    * [client_max_body_size](#client_max_body_size)
+    * [gzip](#gzip)
+        * [gzip_proxied](#gzip_proxied)
+        * [gzip_types](#gzip_types)
+        * [gzip_comp_level](#gzip_comp_level)
+    * [upstream](#upstream)
+    * [Algoritmo de Balanceamento](#algoritmo-de-balanceamento)
+    * [Pesos no Balanceador de Carga](#pesos-no-balanceador-de-carga)
+    * [server](#server)
 
 2. [Configuração do Server](#configuração-do-server)
+
 * [listen](#listen)
 * [server_name](#server_name)
 * [location](#location)
-  * [proxy_redirect](#proxy_redirect)
-  * [proxy_set_header](#proxy_set_header)
-  * [proxy_hide_header](#proxy_hide_header)
-  * [proxy_pass](#proxy_pass)
+    * [proxy_redirect](#proxy_redirect)
+    * [proxy_set_header](#proxy_set_header)
+    * [proxy_hide_header](#proxy_hide_header)
+    * [proxy_pass](#proxy_pass)
 
 3. [Vantagens do uso do Nginx](#vantagens-do-uso-do-nginx)
+
 * [Security](#security)
 * [SSL](#ssl)
 * [Scalability](#scalability)
@@ -47,7 +52,11 @@
 * [Data Compression️](#data-compression)
 * [Horizontal Scaling (Resilience)](#horizontal-scaling-resilience)
 * [Proxy / Redirection](#proxy--redirection)
-* [Important Tutorials️](#important-tutorials)
+
+4. [Sources](#sources)
+
+* [YT️](#yt)
+* [Documentation️](#documentation)
 
 ## Configurações Gerais do Nginx
 
@@ -214,8 +223,9 @@ http {
     }
 ```
 
-- Algoritmo de Balanceamento de Carga:
-    - **_least_conn_**: Envia 'requests' para o 'server' menos 'carregado' no momento.
+### Algoritmo de Balanceamento
+
+- **_least_conn_**: Envia 'requests' para o 'server' menos 'carregado' no momento.
 
 ```nginx configuration
     least_conn;
@@ -223,6 +233,7 @@ http {
 
 - **_round-robin_**:
     - Distribuicao sequencial dos 'requests'
+    - OBS: E o Standard portando _**NAO DEVE**_ ser especificado
 
 ```nginx configuration
     round_robin;
@@ -233,6 +244,26 @@ http {
 
 ```nginx configuration
     ip_hash;
+```
+
+### Pesos no Balanceador de Carga
+- Por padrão, o NGINX distribui as 'requests' entre os servers conforme os pesos usando o Round Robin.
+- No 'Round Robin' o peso para a direcionamento p/ o server e o padrão é 1, portanto 'sequencial'
+- **_EXEMPLO:_**
+  - **Peso do Servidor**:
+      - `backend1.example.com` tem peso 5
+      - `backend2.example.com` tem peso padrão (1)
+
+  - **Distribuição**: A cada 6 'Requests':
+      - 5 são enviadas para `backend1.example.com`
+      - 1 é enviada para `backend2.example.com`
+
+```nginx configuration
+    upstream backend {
+        server backend1.example.com weight=5;
+        server backend2.example.com;
+        server 192.0.0.1 backup;
+    }
 ```
 
 ### server
@@ -254,7 +285,7 @@ http {
 ### listen
 
 - Define a **_'Porta de escuta/recepção'_** dos requests.
-  - **_Requests recebidos aqui_**, serao encaminhados p/ **_'location'_**(sintaxe)
+    - **_Requests recebidos aqui_**, serao encaminhados p/ **_'location'_**(sintaxe)
 - Porta 80 / HTTP:
     - Conexão não criptografada
     - não é SSL - não recomendável expor para WEB
@@ -285,7 +316,7 @@ server_name meu-ip.com.br;
 ```nginx configuration
 location / {
 
-    proxy_redirect off;
+    proxy_redirect off;   # CONFIGURACAO MINIMA OBRIGATORIA
     
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
@@ -300,8 +331,8 @@ location / {
 ### proxy_redirect
 
 - Bloqueia (SEGURANCA) os 'Redirect-Headers' impedindo redirecionamentos dos 'servers' do 'grupo de servers' do
-  'LoadBalancing' (
-  Upstream).
+  LoadBalancing \(Upstream\).
+- OBS: CONFIGURACAO MINIMA OBRIGATORIA
 
 ```nginx configuration
 proxy_redirect off;
@@ -377,22 +408,64 @@ proxy_pass http://loadbalancing-servers-crew;
 - **Faster Thread Release**: Mitigates DDoS by releasing threads more quickly.
 - **Avoids API Compression**: Saves CPU by avoiding compression within the API.
 
+### Formatos de Escalonamento
+- Dinamico
+  - Docker-Compose-Scale:
+    - somente usa 'node-1:8080" e escala no 'docker compose scale'
+  - Vantagens:
+    - Maior rapidez e 'programatica' na escalagem
+    - Ausencia de 'BoilerPlate' do Docker-Compose-File
+  - Desvantages:
+    - Maior possibilidade de acidentes de "escalagem acidental" com Docker-compose-Scale
+
+```nginx configuration
+    upstream router_load_balancer {
+
+        server node-1:8080;
+
+    }
+```
+
+- Estatico:
+  - Services Duplicados no Compose:
+    - Services sao Duplicidades dentro do Docker-compose.yml
+  - Vantagens:
+    - Maior controle da Escalagem
+    - Menor possibilidade de acidentes por "escalagem acidental" com Docker-compose-Scale
+  - Desvantages:
+    - BoilerPlate no Docker-Compose.yml file
+
+```nginx configuration
+    upstream router_load_balancer {
+
+        server node-1:8080;
+        server node-2:8080;
+    }
+```
+
+
 ### Horizontal Scaling (Resilience)
 
 - Replica do container (2 formas) - Horizontal Scaling:
     * [Dynamic | docker-scale](https://youtu.be/9aOpRhm33oM)
-    * [Static | Compose Duplicity](https://youtu.be/bFZurhL14LA)
+    * Static | Docker Compose Service Duplicity
+        * [YT - Portuguese](https://youtu.be/bFZurhL14LA)
+        * [YT - English](https://youtu.be/SYw6w73u8Zs)
 
 ### Proxy / Redirection
 
 - ["Redirectinal Proxy"](https://youtu.be/bFZurhL14LA)
 
-### Important Tutorials
+## Sources
 
-- **Cezar milan**:
-    * [Nginx include Servers](https://youtu.be/WeoZ4Ego1vs)
-    * [Nginx Features - Video 1](https://youtu.be/E51dIa0ZcGs)
-    * [Nginx Features - Video 2](https://youtu.be/Sa74-4ExZ4Q)
-    * [GitHub](https://github.com/wesleymilan/nginx-for-nodejs/blob/main/config/nginx/nginx.conf)
+### YT
+
+* [Nginx include Servers](https://youtu.be/WeoZ4Ego1vs)
+* [Nginx Features - Video 1](https://youtu.be/E51dIa0ZcGs)
+* [Nginx Features - Video 2](https://youtu.be/Sa74-4ExZ4Q)
+
+### Documentation
+
+* [Nginx.Conf Example](https://nginx.org/en/docs/example.html)
 
 ---

@@ -1,0 +1,16 @@
+version: "4"
+
+networks:
+  router_revproxy_loadbalancer:
+
+services:
+
+  node-2:
+    image: webapp-2
+    restart: always
+    build:
+      context: ..
+      dockerfile: ./Docker/DockerfileVaadin
+    tty: true
+    networks:
+      - router_revproxy_loadbalancer

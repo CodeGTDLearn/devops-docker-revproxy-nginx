@@ -1,4 +1,5 @@
 .dockerignore
-webapp-compose.yml
-nginx-compose.yml
+compose-node1.yml
+compose-node2.yml
+compose-nginx.yml
 DockerfileVaadin
