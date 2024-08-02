@@ -247,16 +247,17 @@ http {
 ```
 
 ### Pesos no Balanceador de Carga
+
 - Por padrão, o NGINX distribui as 'requests' entre os servers conforme os pesos usando o Round Robin.
 - No 'Round Robin' o peso para a direcionamento p/ o server e o padrão é 1, portanto 'sequencial'
 - **_EXEMPLO:_**
-  - **Peso do Servidor**:
-      - `backend1.example.com` tem peso 5
-      - `backend2.example.com` tem peso padrão (1)
+    - **Peso do Servidor**:
+        - `backend1.example.com` tem peso 5
+        - `backend2.example.com` tem peso padrão (1)
 
-  - **Distribuição**: A cada 6 'Requests':
-      - 5 são enviadas para `backend1.example.com`
-      - 1 é enviada para `backend2.example.com`
+    - **Distribuição**: A cada 6 'Requests':
+        - 5 são enviadas para `backend1.example.com`
+        - 1 é enviada para `backend2.example.com`
 
 ```nginx configuration
     upstream backend {
@@ -295,7 +296,14 @@ http {
         - Bloquear acesso direto à Porta 80.
 
 ```nginx configuration
-listen 80;
+    listen 80;
+```
+
+- Tipos de 'Escuta' (IpV4 ou Ipv6)
+
+```nginx configuration
+    listen 3000;            # escuta Ipv4
+    listen  [::]:3000;      # escuta Ipv6
 ```
 
 ### server_name
@@ -409,14 +417,15 @@ proxy_pass http://loadbalancing-servers-crew;
 - **Avoids API Compression**: Saves CPU by avoiding compression within the API.
 
 ### Formatos de Escalonamento
+
 - Dinamico
-  - Docker-Compose-Scale:
-    - somente usa 'node-1:8080" e escala no 'docker compose scale'
-  - Vantagens:
-    - Maior rapidez e 'programatica' na escalagem
-    - Ausencia de 'BoilerPlate' do Docker-Compose-File
-  - Desvantages:
-    - Maior possibilidade de acidentes de "escalagem acidental" com Docker-compose-Scale
+    - Docker-Compose-Scale:
+        - somente usa 'node-1:8080" e escala no 'docker compose scale'
+    - Vantagens:
+        - Maior rapidez e 'programatica' na escalagem
+        - Ausencia de 'BoilerPlate' do Docker-Compose-File
+    - Desvantages:
+        - Maior possibilidade de acidentes de "escalagem acidental" com Docker-compose-Scale
 
 ```nginx configuration
     upstream router_load_balancer {
@@ -427,13 +436,13 @@ proxy_pass http://loadbalancing-servers-crew;
 ```
 
 - Estatico:
-  - Services Duplicados no Compose:
-    - Services sao Duplicidades dentro do Docker-compose.yml
-  - Vantagens:
-    - Maior controle da Escalagem
-    - Menor possibilidade de acidentes por "escalagem acidental" com Docker-compose-Scale
-  - Desvantages:
-    - BoilerPlate no Docker-Compose.yml file
+    - Services Duplicados no Compose:
+        - Services sao Duplicidades dentro do Docker-compose.yml
+    - Vantagens:
+        - Maior controle da Escalagem
+        - Menor possibilidade de acidentes por "escalagem acidental" com Docker-compose-Scale
+    - Desvantages:
+        - BoilerPlate no Docker-Compose.yml file
 
 ```nginx configuration
     upstream router_load_balancer {
@@ -442,7 +451,6 @@ proxy_pass http://loadbalancing-servers-crew;
         server node-2:8080;
     }
 ```
-
 
 ### Horizontal Scaling (Resilience)
 

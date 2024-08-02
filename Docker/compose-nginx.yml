@@ -19,7 +19,7 @@ services:
 #    - usa 'node-1:8080"/"node-2:8080" 02 Services vindos do Compose
     depends_on:
       - node-1  # WebApp1-Service (docker-scale OU node-service-duplicados)
-      #- node-2  # WebApp2-Service (node-service-duplicados)
+      - node-2  # WebApp2-Service (node-service-duplicados)
 
     # LocalPort/EC2-Port[80]:NginxPortContainerService[3000] (server->listen Nginx.conf)
     networks:
