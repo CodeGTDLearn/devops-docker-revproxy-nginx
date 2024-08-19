@@ -5,8 +5,8 @@ networks:
 
 services:
 
-  node-2:
-    image: webapp-2
+  node2:
+    image: pauloportfolio/webapp2:1.0
     restart: always
     build:
       context: ..

@@ -5,12 +5,12 @@ networks:
 
 services:
 
-  node-1:
-    image: webapp-1
+  node1:
+    image: pauloportfolio/webapp1:1.0
     restart: always
     build:
       context: .. # Fixa a [root] na "pasta 'de traz', da pasta Docker
-      dockerfile: ./Docker/DockerfileVaadin
+      dockerfile: ./Docker/Dockerfile
     tty: true
 
     # container_name: Not allow 'Docker Scale' with a 'SingleName'
