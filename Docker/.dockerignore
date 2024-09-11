@@ -1,5 +1,6 @@
 .dockerignore
-compose-node1.yml
-compose-node2.yml
-compose-nginx.yml
-DockerfileVaadin
+dev/compose-node1.yml
+dev/compose-node2.yml
+dev/compose-nginx.yml
+dev/Dockerfile_nginx
+dev/Dockerfile

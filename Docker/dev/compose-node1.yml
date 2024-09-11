@@ -9,13 +9,12 @@ services:
     image: pauloportfolio/webapp1:1.0
     restart: always
     build:
-      context: .. # Fixa a [root] na "pasta 'de traz', da pasta Docker
-      dockerfile: ./Docker/Dockerfile
+      context: ../../.. # Fixa o [root] na "pasta 'de traz', da pasta Docker
+      dockerfile: ../dev/Dockerfile
     tty: true
-
-    # container_name: Not allow 'Docker Scale' with a 'SingleName'
-
-    #ports: Not allow 'Docker Scale' in a 'SinglePort'
-    # - "8080:8080"
     networks:
       - router_revproxy_loadbalancer
+
+    # container_name: Not allow 'Docker Scale' with a 'SingleName'
+    #ports: Not allow 'Docker Scale' in a 'SinglePort'
+    # - "8080:8080"

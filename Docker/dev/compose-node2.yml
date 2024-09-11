@@ -9,8 +9,8 @@ services:
     image: pauloportfolio/webapp2:1.0
     restart: always
     build:
-      context: ..
-      dockerfile: ./Docker/DockerfileVaadin
+      context: ../../..
+      dockerfile: ../dev/Dockerfile
     tty: true
     networks:
       - router_revproxy_loadbalancer

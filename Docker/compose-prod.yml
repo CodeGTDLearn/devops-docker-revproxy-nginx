@@ -1,0 +1,32 @@
+version: "4"
+
+networks:
+  router_revproxy_loadbalancer:
+
+services:
+
+  nginx:
+    image: pauloportfolio/custom_nginx:1.0
+    volumes:
+      - ../nginx:/etc/nginx
+    ports:
+      - "8081:3000"
+    depends_on:
+      - node1
+      - node2
+    networks:
+      - router_revproxy_loadbalancer
+
+  node1:
+    image: pauloportfolio/webapp1:1.0
+    restart: always
+    tty: true
+    networks:
+      - router_revproxy_loadbalancer
+
+  node2:
+    image: pauloportfolio/webapp2:1.0
+    restart: always
+    tty: true
+    networks:
+      - router_revproxy_loadbalancer

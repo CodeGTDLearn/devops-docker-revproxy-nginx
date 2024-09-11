@@ -1,0 +1,29 @@
+version: "4"
+
+networks:
+  router_revproxy_loadbalancer:
+
+services:
+
+  nginx:
+    image: pauloportfolio/custom_nginx:1.0
+    build:
+      context: ../../.. # Fixa o [root] na "pasta 'de traz', da pasta Docker/dev
+      dockerfile: ../dev/Dockerfile_nginx
+    volumes:
+      - ../nginx:/etc/nginx
+    ports:
+      - "8081:3000"
+
+# 02 SISTEMAS DE ESCALAGEM - DEPENDS_ON:
+# A) Compose-Scale:
+#    - somente usa 'node-1:8080", escala usando o 'docker compose scale'
+# B) Compose-Services-Duplicados:
+#    - usa 'node1:8080" e "node2:8080": 02 Services 'Hard-Coded' no Compose
+    depends_on:
+      - node1  # WebApp1-Service (Compose-Services-Duplicados OU Compose-Scale)
+      - node2  # WebApp2-Service (Compose-Services-Duplicados                 )
+
+    # LocalPort/EC2-Port[80]:NginxPortContainerService[3000] (server->listen Nginx.conf)
+    networks:
+      - router_revproxy_loadbalancer
